@@ -1,6 +1,6 @@
 package bus;
 
-public abstract interface IMileageEfficiency {
+public interface IMileageEfficiency {
 
-     abstract public double getMilePerUnitOfEnergy();
+	abstract public double getMilePerUnitOfEnergy();
 }
