@@ -1,7 +1,10 @@
 /.metadata/
+.idea/
 
-# Stuff from Eclipse
+
+## Stuff from Eclipse ##
 src/.classpath
 src/.project
 src/bus/*.class
 src/client/*.class
+########################
