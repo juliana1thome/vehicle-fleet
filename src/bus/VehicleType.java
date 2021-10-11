@@ -1,6 +1,6 @@
 package bus;
 
-public enum EnumType {
+public enum VehicleType {
 
     GasVehicle,
     ElectricVehicle,

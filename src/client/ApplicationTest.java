@@ -21,7 +21,7 @@ public class ApplicationTest {
     // Add all types to array list Function
     public static void add(Scanner scanner, Vehicle vehicle)
     {
-        if (vehicle.getType() == EnumType.GasVehicle)
+        if (vehicle.getType() == VehicleType.GasVehicle)
         {
             GasVehicle gasVehicle = new GasVehicle();
             gasVehicle = (GasVehicle) vehicle; // Down-Casting: taking object of the superclass, and convert it to subclass
@@ -42,9 +42,9 @@ public class ApplicationTest {
             gasVehicle.setMade(scanner.next());
 
             // Adding to data collection
-            DataCollection.add(gasVehicle);
+            VehiclesFleet.add(gasVehicle);
         }
-        else if (vehicle.getType() == EnumType.ElectricVehicle)
+        else if (vehicle.getType() == VehicleType.ElectricVehicle)
         {
             ElectricVehicle electricVehicle = new ElectricVehicle();
             electricVehicle = (ElectricVehicle) vehicle;
@@ -65,7 +65,7 @@ public class ApplicationTest {
             electricVehicle.setMade(scanner.next());
 
             // Adding to data collection
-            DataCollection.add(electricVehicle);
+            VehiclesFleet.add(electricVehicle);
         }
     }
 
@@ -88,13 +88,13 @@ public class ApplicationTest {
             {
                 case 1:
                     gasVehicle = new GasVehicle();
-                    gasVehicle.setType(EnumType.GasVehicle);
+                    gasVehicle.setType(VehicleType.GasVehicle);
                     add(scanner, gasVehicle);
                     break;
 
                 case 2:
                     electricVehicle = new ElectricVehicle();
-                    electricVehicle.setType(EnumType.ElectricVehicle);
+                    electricVehicle.setType(VehicleType.ElectricVehicle);
                     add(scanner, electricVehicle);
                     break;
             }
@@ -110,7 +110,7 @@ public class ApplicationTest {
     {
         System.out.println("List of Vehicles");
 
-        for(Vehicle item : DataCollection.getListOfVehicle())
+        for(Vehicle item : VehiclesFleet.getListOfVehicle())
         {
             System.out.println("Item: " + item);
         }

@@ -38,6 +38,12 @@ public class GasVehicle extends Vehicle {
 
 	@Override
 	public void makeTrip(int tripCounter, double fuelConsumed) {
+		this.tripCounter = tripCounter;
+		this.fuelConsumed = fuelConsumed;
 	}
 
+	@Override
+	public void makeTrip() {
+		makeTrip(100, 7.7); 
+	}
 }
