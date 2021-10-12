@@ -15,7 +15,7 @@ public class Vehicle implements IMileageEfficiency {
 	protected String serialNumber;
 	protected Short model;
 	protected String made;
-	protected EnumType type;
+	protected VehicleType type;
 
 	// Constructor:
 	public Vehicle(Integer tripCounter, Double energyConsumed, String serialNumber, Short model, String made) {
@@ -84,11 +84,11 @@ public class Vehicle implements IMileageEfficiency {
 	}
 
 	// Get and Set: type
-	public EnumType getType() {
+	public VehicleType getType() {
 		return type;
 	}
 
-	public void setType(EnumType type) {
+	public void setType(VehicleType type) {
 		this.type = type;
 	}
 

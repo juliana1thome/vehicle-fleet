@@ -23,7 +23,7 @@ public class ElectricVehicle extends Vehicle {
 	}
 
 	public void setFuelConsumed(Double energyConsumed) {
-		this.kwPowerConsumed = kwPowerConsumed;
+		this.kwPowerConsumed = energyConsumed;
 	}
 
 	// ToString:
@@ -43,5 +43,13 @@ public class ElectricVehicle extends Vehicle {
 
 	@Override
 	public void makeTrip(int tripCounter, double kwPowerConsumed) {
+		this.tripCounter = tripCounter;
+		this.kwPowerConsumed = kwPowerConsumed;
+		
+	}
+	
+	@Override
+	public void makeTrip() {
+		makeTrip(100, 7.7); 
 	}
 }
