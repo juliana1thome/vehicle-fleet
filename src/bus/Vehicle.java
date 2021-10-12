@@ -2,13 +2,6 @@ package bus;
 
 public class Vehicle implements IMileageEfficiency {
 
-	// TODO: Fix the energyConsumed, and check how to show the
-	// getMilePerUnitOfEnergy, and how to do it
-	// Item: ElectricVehicle{, tripCounter=1, energyConsumed=null, serialNumber='1',
-	// model=1, made='1', type=ElectricVehicle}
-	// Item: GasVehicle{, tripCounter=2, energyConsumed=null, serialNumber='2',
-	// model=2, made='2', type=GasVehicle}
-
 	// Variables:
 	protected Integer tripCounter;
 	protected Double energyConsumed;
@@ -83,7 +76,7 @@ public class Vehicle implements IMileageEfficiency {
 		this.made = made;
 	}
 
-	// Get and Set: type
+	// Get and Set: Type
 	public VehicleType getType() {
 		return type;
 	}
@@ -103,15 +96,15 @@ public class Vehicle implements IMileageEfficiency {
 
 	// Get Mile Per Unit of Energy:
 	@Override
-	public double getMilePerUnitOfEnergy() {
-		return 0;
+	public Double getMilePerUnitOfEnergy() {
+		return (double) 0;
 	}
 
 	// Make Trip:
 	public void makeTrip() {
 	}
 
-	public void makeTrip(int tripCounter, double energyConsumed) {
+	public void makeTrip(Integer tripCounter, Double energyConsumed) {
 	}
 
 }

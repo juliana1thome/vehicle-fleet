@@ -126,7 +126,21 @@ public class ApplicationTest {
         // Loading data from user
         loadData(scanner);
 
-        // Print Data
+        // Print Data Before Sorting
+        System.out.println("------------------------------------------------------ ");
+        System.out.println("Before sorting: ");
+        printData();
+
+        // Print Data Before Sorting
+        System.out.println("------------------------------------------------------");
+        System.out.println("After sorting by Mileage Efficiency: ");
+        VehiclesFleet.sortByMileageEfficiency();
+        printData();
+
+        // Print Data Before Sorting
+        System.out.println("------------------------------------------------------");
+        System.out.println("After sorting by Serial Number: ");
+        VehiclesFleet.sortBySerialNumber();
         printData();
 
         // End of application

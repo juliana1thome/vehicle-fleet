@@ -16,12 +16,13 @@ public class GasVehicle extends Vehicle {
 	}
 
 	// Getters and Setters
-	public Double getFuelConsumed() {
+	public Double getEnergyConsumed() {
 		return fuelConsumed;
 	}
 
-	public void setFuelConsumed(Double fuelConsumed) {
+	public void setEnergyConsumed(Double fuelConsumed) {
 		this.fuelConsumed = fuelConsumed;
+
 	}
 
 	@Override
@@ -32,18 +33,13 @@ public class GasVehicle extends Vehicle {
 
 	// Functions
 	@Override
-	public double getMilePerUnitOfEnergy() {
+	public Double getMilePerUnitOfEnergy() {
 		return tripCounter / fuelConsumed;
 	}
 
 	@Override
-	public void makeTrip(int tripCounter, double fuelConsumed) {
+	public void makeTrip(Integer tripCounter, Double fuelConsumed) {
 		this.tripCounter = tripCounter;
 		this.fuelConsumed = fuelConsumed;
-	}
-
-	@Override
-	public void makeTrip() {
-		makeTrip(100, 7.7); 
 	}
 }

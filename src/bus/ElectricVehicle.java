@@ -18,12 +18,12 @@ public class ElectricVehicle extends Vehicle {
 	}
 
 	// Getters and Setters:
-	public Double getFuelConsumed() {
+	public Double getEnergyConsumed() {
 		return kwPowerConsumed;
 	}
 
-	public void setFuelConsumed(Double energyConsumed) {
-		this.kwPowerConsumed = energyConsumed;
+	public void setEnergyConsumed(Double kwPowerConsumed) {
+		this.kwPowerConsumed = kwPowerConsumed;
 	}
 
 	// ToString:
@@ -37,19 +37,14 @@ public class ElectricVehicle extends Vehicle {
 
 	// Functions:
 	@Override
-	public double getMilePerUnitOfEnergy() {
+	public Double getMilePerUnitOfEnergy() {
 		return tripCounter / kwPowerConsumed;
 	}
 
 	@Override
-	public void makeTrip(int tripCounter, double kwPowerConsumed) {
+	public void makeTrip(Integer tripCounter, Double kwPowerConsumed) {
 		this.tripCounter = tripCounter;
 		this.kwPowerConsumed = kwPowerConsumed;
 		
-	}
-	
-	@Override
-	public void makeTrip() {
-		makeTrip(100, 7.7); 
 	}
 }
