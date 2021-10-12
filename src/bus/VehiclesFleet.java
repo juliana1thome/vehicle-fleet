@@ -31,24 +31,14 @@ public class VehiclesFleet {
 	public static void print(VehicleType type) {
 		for (Vehicle vehicle : vehicleArrayList) {
 			if (vehicle.getType() == type) {
-				printVehicle(vehicle);
+				System.out.print(vehicle);
 			}
 		}
 	}
 
 	public static void print() {
 		for (Vehicle vehicle : vehicleArrayList) {
-			printVehicle(vehicle);
-		}
-	}
-
-	private static void printVehicle(Vehicle vehicle) {
-		if (vehicle.getClass() == GasVehicle.class) {
-			System.out.println(((GasVehicle) vehicle).toString());
-		} else if (vehicle.getClass() == ElectricVehicle.class) {
-			System.out.println(((ElectricVehicle) vehicle).toString());
-		} else {
-			System.out.println(vehicle.toString());
+			System.out.println(vehicle);
 		}
 	}
 
@@ -58,5 +48,15 @@ public class VehiclesFleet {
 
 	public static void sortByMileageEfficiency() {
 		Collections.sort(vehicleArrayList, new MileageEfficiencyComparator());
+	}
+	
+	public static Vehicle searchBySerialNumber(String serialNumber) {
+		// Linear search. To improve we can apply binary search for later
+		for(Vehicle vehicle : vehicleArrayList) {
+			if(vehicle.getSerialNumber().compareTo(serialNumber) == 0) {
+				return vehicle;
+			}
+		}
+		return null;
 	}
 }
