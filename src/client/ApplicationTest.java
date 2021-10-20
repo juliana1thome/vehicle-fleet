@@ -23,7 +23,7 @@ public class ApplicationTest {
     {
         if (vehicle.getType() == VehicleType.GasVehicle)
         {
-            GasVehicle gasVehicle = new GasVehicle();
+            GasVehicle gasVehicle;
             gasVehicle = (GasVehicle) vehicle; // Down-Casting: taking object of the superclass, and convert it to subclass
 
             System.out.println("Serial Number? ");
@@ -46,7 +46,7 @@ public class ApplicationTest {
         }
         else if (vehicle.getType() == VehicleType.ElectricVehicle)
         {
-            ElectricVehicle electricVehicle = new ElectricVehicle();
+            ElectricVehicle electricVehicle;
             electricVehicle = (ElectricVehicle) vehicle;
 
             System.out.println("Serial Number? ");
@@ -105,17 +105,6 @@ public class ApplicationTest {
         }while(keepLooping == 1);
     }
 
-    // Print Data Function
-    public static void printData()
-    {
-        System.out.println("List of Vehicles");
-
-        for(Vehicle item : VehiclesFleet.getListOfVehicle())
-        {
-            System.out.println("Item: " + item);
-        }
-    }
-
     // MAIN Function
     public static void main(String[] args){
 
@@ -126,22 +115,40 @@ public class ApplicationTest {
         // Loading data from user
         loadData(scanner);
 
-        // Print Data Before Sorting
-        System.out.println("------------------------------------------------------ ");
-        System.out.println("Before sorting: ");
-        printData();
+        // Search by Serial Number
+        System.out.println("\n------------------------------------------------------");
+        System.out.println("Search a Vehicle by its serial number: ");
+        VehiclesFleet.searchBySerialNumber(scanner.next());
+
+        // Print Data By Vehicle Type
+        // By Gas Vehicle
+        System.out.println("\n------------------------------------------------------");
+        System.out.println("Printing only Gas vehicles, before sorting:");
+        VehiclesFleet.printGasVehicles();
+
+        // By Electric Vehicle
+        System.out.println("\n------------------------------------------------------\n");
+        System.out.println("Printing only Electric vehicles, before sorting:");
+        VehiclesFleet.printElectricVehicles();
+
 
         // Print Data Before Sorting
-        System.out.println("------------------------------------------------------");
-        System.out.println("After sorting by Mileage Efficiency: ");
+        System.out.println("\n------------------------------------------------------");
+        System.out.println("Printing the entire fleet of vehicles, before sorting:");
+        VehiclesFleet.print();
+
+        // Print Data Before Sorting by Mileage Efficiency
+        System.out.println("\n------------------------------------------------------");
+        System.out.println("Printing vehicles, after sorting by Mileage Efficiency (Decreasing): ");
         VehiclesFleet.sortByMileageEfficiency();
-        printData();
+        VehiclesFleet.print();
 
-        // Print Data Before Sorting
-        System.out.println("------------------------------------------------------");
-        System.out.println("After sorting by Serial Number: ");
+        // Print Data Before Sorting by Serial Number
+        System.out.println("\n------------------------------------------------------");
+        System.out.println("Printing vehicles, after sorting by Serial Number (Decreasing): ");
         VehiclesFleet.sortBySerialNumber();
-        printData();
+        VehiclesFleet.print();
+
 
         // End of application
         System.out.println("End of application");
