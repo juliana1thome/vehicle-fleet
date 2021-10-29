@@ -1,12 +1,19 @@
 package bus;
 
 public class GasVehicle extends Vehicle {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	Double fuelConsumed;
 
 	// Constructor:
-	public GasVehicle(Integer tripCounter, Double energyConsumed, String serialNumber, Short model, String made) {
+	public GasVehicle(Integer tripCounter, Double energyConsumed, String serialNumber, Short model, String made) throws NegativeNumberException, EmptyFieldException {
 		super(tripCounter, energyConsumed, serialNumber, model, made);
-		this.fuelConsumed = energyConsumed;
+		this.type = VehicleType.GasVehicle;
+//		this.fuelConsumed = energyConsumed;
+		this.setEnergyConsumed(energyConsumed);
 	}
 
 	// Default Constructor:
@@ -20,7 +27,9 @@ public class GasVehicle extends Vehicle {
 		return fuelConsumed;
 	}
 
-	public void setEnergyConsumed(Double fuelConsumed) {
+	public void setEnergyConsumed(Double fuelConsumed) throws EmptyFieldException, NegativeNumberException {
+		Validator.validateValueEmpty(String.valueOf(fuelConsumed));
+		Validator.validateNegativeNumber(fuelConsumed);
 		this.fuelConsumed = fuelConsumed;
 
 	}
