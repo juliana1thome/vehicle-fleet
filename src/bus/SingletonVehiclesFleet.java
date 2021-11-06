@@ -4,30 +4,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class VehiclesFleet {
+public class SingletonVehiclesFleet {
 
-	private static VehiclesFleet singleInstance = null;
-	private static ArrayList<Vehicle> vehicleArrayList = null;
+	private static SingletonVehiclesFleet singleInstance = null;
+	private ArrayList<Vehicle> vehicleArrayList = null;
 
 	// Getter of Vehicle list:
-	public static ArrayList<Vehicle> getListOfVehicle() {return vehicleArrayList;}
+	public ArrayList<Vehicle> getListOfVehicle() {return vehicleArrayList;}
 
 	// Singleton:
-	private VehiclesFleet() {
+	private SingletonVehiclesFleet() {
 		vehicleArrayList = new ArrayList<Vehicle>();
 	}
 
 	// Singleton:
-	public static VehiclesFleet getSingleInstance() { // Applying singleton idea
+	public static SingletonVehiclesFleet getSingleInstance() { // Applying singleton idea
 		if (singleInstance == null) {
-			singleInstance = new VehiclesFleet();
+			singleInstance = new SingletonVehiclesFleet();
 		}
 		return singleInstance;
 	}
 
 	// Singleton:
-	private void setSingleInstance(VehiclesFleet singleInstance) {
-		VehiclesFleet.singleInstance = singleInstance;
+	private void setSingleInstance(SingletonVehiclesFleet singleInstance) {
+		SingletonVehiclesFleet.singleInstance = singleInstance;
 	}
 
 	// Public Functions:
@@ -96,7 +96,7 @@ public class VehiclesFleet {
 	}
 
 	// Serialization:
-	public static void Serialized() throws IOException, ClassNotFoundException{
+	public void Serialized() throws IOException, ClassNotFoundException{
 		FileManager.writeSerializedFile(getListOfVehicle());
 
 		System.out.println("\n LIST of vehicles FROM SERIALIZED FILE");

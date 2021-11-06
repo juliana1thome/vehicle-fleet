@@ -1,12 +1,11 @@
 package bus;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Vehicle implements IMileageEfficiency, Serializable {
 
-	/**
-	 * 
-	 */
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	// Variables:

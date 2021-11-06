@@ -2,6 +2,7 @@ package client;
 
 import bus.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ApplicationTest {
@@ -86,7 +87,7 @@ public class ApplicationTest {
 			}
 
 			// Adding to data collection
-			VehiclesFleet.getSingleInstance().add(gasVehicle);
+			SingletonVehiclesFleet.getSingleInstance().add(gasVehicle);
 		} else if (vehicle.getType() == VehicleType.ElectricVehicle) {
 			ElectricVehicle electricVehicle;
 			electricVehicle = (ElectricVehicle) vehicle;
@@ -151,7 +152,7 @@ public class ApplicationTest {
 
 
             // Adding to data collection
-            VehiclesFleet.getSingleInstance().add(electricVehicle);
+            SingletonVehiclesFleet.getSingleInstance().add(electricVehicle);
         }
     }
 
@@ -192,7 +193,7 @@ public class ApplicationTest {
     }
 
 	// MAIN Function
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 
 		// Initiate scan
 		Scanner scanner = new Scanner(System.in);
@@ -204,37 +205,41 @@ public class ApplicationTest {
 		// Search by Serial Number
 		System.out.println("\n------------------------------------------------------");
 		System.out.println("Search a Vehicle by its serial number: ");
-		VehiclesFleet.getSingleInstance().searchBySerialNumber(scanner.next());
+		SingletonVehiclesFleet.getSingleInstance().searchBySerialNumber(scanner.next());
 
 		// Print Data By Vehicle Type
 		// By Gas Vehicle
 		System.out.println("\n------------------------------------------------------");
 		System.out.println("Printing only Gas vehicles, before sorting:");
-		VehiclesFleet.getSingleInstance().printGasVehicles();
+		SingletonVehiclesFleet.getSingleInstance().printGasVehicles();
 
 		// By Electric Vehicle
 		System.out.println("\n------------------------------------------------------\n");
 		System.out.println("Printing only Electric vehicles, before sorting:");
-		VehiclesFleet.getSingleInstance().printElectricVehicles();
+		SingletonVehiclesFleet.getSingleInstance().printElectricVehicles();
 
 
 		// Print Data Before Sorting
 		System.out.println("\n------------------------------------------------------");
 		System.out.println("Printing the entire fleet of vehicles, before sorting:");
-		VehiclesFleet.getSingleInstance().print();
+		SingletonVehiclesFleet.getSingleInstance().print();
 
 		// Print Data Before Sorting by Mileage Efficiency
 		System.out.println("\n------------------------------------------------------");
 		System.out.println("Printing vehicles, after sorting by Mileage Efficiency (Decreasing): ");
-		VehiclesFleet.getSingleInstance().sortByMileageEfficiency();
-		VehiclesFleet.getSingleInstance().print();
+		SingletonVehiclesFleet.getSingleInstance().sortByMileageEfficiency();
+		SingletonVehiclesFleet.getSingleInstance().print();
 
 		// Print Data Before Sorting by Serial Number
 		System.out.println("\n------------------------------------------------------");
 		System.out.println("Printing vehicles, after sorting by Serial Number and depending on its type (Increasing): ");
-		VehiclesFleet.getSingleInstance().sortBySerialNumber();
-		VehiclesFleet.getSingleInstance().print();
+		SingletonVehiclesFleet.getSingleInstance().sortBySerialNumber();
+		SingletonVehiclesFleet.getSingleInstance().print();
 
+		// Serializing final vehicle list
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("Serializing final vehicle list... ");
+		SingletonVehiclesFleet.getSingleInstance().Serialized();
 
 		// End of application
 		System.out.println("End of application");
