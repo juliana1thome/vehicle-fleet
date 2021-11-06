@@ -19,12 +19,6 @@ public class Vehicle implements IMileageEfficiency, Serializable {
 
 	// Constructor:
 	public Vehicle(Integer tripCounter, Double energyConsumed, String serialNumber, Short model, String made) throws NegativeNumberException, EmptyFieldException {
-//		this.tripCounter = tripCounter;		
-//		this.energyConsumed = energyConsumed;
-//		this.serialNumber = serialNumber;
-//		this.model = model;
-//		this.made = made;
-		
 		this.setTripCounter(tripCounter);
 		this.setEnergyConsumed(energyConsumed);
 		this.setSerialNumber(serialNumber);

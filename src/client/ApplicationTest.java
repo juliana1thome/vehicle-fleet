@@ -32,8 +32,8 @@ public class ApplicationTest {
 					System.out.println("Serial Number? ");
 					gasVehicle.setSerialNumber(scanner.next());
 					isValid = true;
-				} catch (EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+				} catch (EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
@@ -44,8 +44,8 @@ public class ApplicationTest {
 					System.out.println("Trip Counter? ");
 					gasVehicle.setTripCounter(scanner.nextInt());
 					isValid = true;
-				} catch (NegativeNumberException | EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+				} catch (NegativeNumberException | EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
@@ -56,8 +56,8 @@ public class ApplicationTest {
 					System.out.println("Gas Consumed? ");
 					gasVehicle.setEnergyConsumed(scanner.nextDouble());
 					isValid = true;
-				} catch (NegativeNumberException | EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+				} catch (NegativeNumberException | EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
@@ -67,8 +67,9 @@ public class ApplicationTest {
 				try {
 					System.out.println("Model? ");
 					gasVehicle.setModel(scanner.nextShort());
-				} catch (NegativeNumberException | EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+					isValid = true;
+				} catch (NegativeNumberException | EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
@@ -78,13 +79,14 @@ public class ApplicationTest {
 				try {
 					System.out.println("Made? ");
 					gasVehicle.setMade(scanner.next());
-				} catch (EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+					isValid = true;
+				} catch (EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
 			// Adding to data collection
-			VehiclesFleet.add(gasVehicle);
+			VehiclesFleet.getSingleInstance().add(gasVehicle);
 		} else if (vehicle.getType() == VehicleType.ElectricVehicle) {
 			ElectricVehicle electricVehicle;
 			electricVehicle = (ElectricVehicle) vehicle;
@@ -94,8 +96,8 @@ public class ApplicationTest {
 					System.out.println("Serial Number? ");
 					electricVehicle.setSerialNumber(scanner.next());
 					isValid = true;
-				} catch (EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+				} catch ( EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
@@ -106,8 +108,8 @@ public class ApplicationTest {
 					System.out.println("Trip Counter? ");
 					electricVehicle.setTripCounter(scanner.nextInt());
 					isValid = true;
-				} catch (NegativeNumberException | EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+				} catch (NegativeNumberException | EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
@@ -118,8 +120,8 @@ public class ApplicationTest {
 					System.out.println("Gas Consumed? ");
 					electricVehicle.setEnergyConsumed(scanner.nextDouble());
 					isValid = true;
-				} catch (NegativeNumberException | EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+				} catch (NegativeNumberException | EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
@@ -129,8 +131,9 @@ public class ApplicationTest {
 				try {
 					System.out.println("Model? ");
 					electricVehicle.setModel(scanner.nextShort());
-				} catch (NegativeNumberException | EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+					isValid = true;
+				} catch (NegativeNumberException | EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}
 
@@ -140,14 +143,15 @@ public class ApplicationTest {
 				try {
 					System.out.println("Made? ");
 					electricVehicle.setMade(scanner.next());
-				} catch (EmptyFieldException ex) {
-					System.out.println(ex.getMessage());
+					isValid = true;
+				} catch (EmptyFieldException exception) {
+					System.out.println(exception.getMessage());
 				}
 			}		
 
 
             // Adding to data collection
-            VehiclesFleet.add(electricVehicle);
+            VehiclesFleet.getSingleInstance().add(electricVehicle);
         }
     }
 
@@ -187,54 +191,54 @@ public class ApplicationTest {
         }while(keepLooping == 1);
     }
 
-    // MAIN Function
-    public static void main(String[] args){
+	// MAIN Function
+	public static void main(String[] args){
 
-        // Initiate scan
-        Scanner scanner = new Scanner(System.in);
+		// Initiate scan
+		Scanner scanner = new Scanner(System.in);
 
-        // Load data during run-time
-        // Loading data from user
-        loadData(scanner);
+		// Load data during run-time
+		// Loading data from user
+		loadData(scanner);
 
-        // Search by Serial Number
-        System.out.println("\n------------------------------------------------------");
-        System.out.println("Search a Vehicle by its serial number: ");
-        VehiclesFleet.searchBySerialNumber(scanner.next());
+		// Search by Serial Number
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("Search a Vehicle by its serial number: ");
+		VehiclesFleet.getSingleInstance().searchBySerialNumber(scanner.next());
 
-        // Print Data By Vehicle Type
-        // By Gas Vehicle
-        System.out.println("\n------------------------------------------------------");
-        System.out.println("Printing only Gas vehicles, before sorting:");
-        VehiclesFleet.printGasVehicles();
+		// Print Data By Vehicle Type
+		// By Gas Vehicle
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("Printing only Gas vehicles, before sorting:");
+		VehiclesFleet.getSingleInstance().printGasVehicles();
 
-        // By Electric Vehicle
-        System.out.println("\n------------------------------------------------------\n");
-        System.out.println("Printing only Electric vehicles, before sorting:");
-        VehiclesFleet.printElectricVehicles();
-
-
-        // Print Data Before Sorting
-        System.out.println("\n------------------------------------------------------");
-        System.out.println("Printing the entire fleet of vehicles, before sorting:");
-        VehiclesFleet.print();
-
-        // Print Data Before Sorting by Mileage Efficiency
-        System.out.println("\n------------------------------------------------------");
-        System.out.println("Printing vehicles, after sorting by Mileage Efficiency (Decreasing): ");
-        VehiclesFleet.sortByMileageEfficiency();
-        VehiclesFleet.print();
-
-        // Print Data Before Sorting by Serial Number
-        System.out.println("\n------------------------------------------------------");
-        System.out.println("Printing vehicles, after sorting by Serial Number (Decreasing): ");
-        VehiclesFleet.sortBySerialNumber();
-        VehiclesFleet.print();
+		// By Electric Vehicle
+		System.out.println("\n------------------------------------------------------\n");
+		System.out.println("Printing only Electric vehicles, before sorting:");
+		VehiclesFleet.getSingleInstance().printElectricVehicles();
 
 
-        // End of application
-        System.out.println("End of application");
-        scanner.close();
-        System.exit(0);
+		// Print Data Before Sorting
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("Printing the entire fleet of vehicles, before sorting:");
+		VehiclesFleet.getSingleInstance().print();
+
+		// Print Data Before Sorting by Mileage Efficiency
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("Printing vehicles, after sorting by Mileage Efficiency (Decreasing): ");
+		VehiclesFleet.getSingleInstance().sortByMileageEfficiency();
+		VehiclesFleet.getSingleInstance().print();
+
+		// Print Data Before Sorting by Serial Number
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("Printing vehicles, after sorting by Serial Number and depending on its type (Increasing): ");
+		VehiclesFleet.getSingleInstance().sortBySerialNumber();
+		VehiclesFleet.getSingleInstance().print();
+
+
+		// End of application
+		System.out.println("End of application");
+		scanner.close();
+		System.exit(0);
     }
 }

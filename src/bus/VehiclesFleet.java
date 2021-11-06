@@ -1,96 +1,108 @@
 package bus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class VehiclesFleet {
 
-	// Private Functions:
+	private static VehiclesFleet singleInstance = null;
+	private static ArrayList<Vehicle> vehicleArrayList = null;
 
-	// Creating an array list to save all my Vehicles
-	private static ArrayList<Vehicle> vehicleArrayList = new ArrayList<Vehicle>();
+	// Getter of Vehicle list:
+	public static ArrayList<Vehicle> getListOfVehicle() {return vehicleArrayList;}
+
+	// Singleton:
+	private VehiclesFleet() {
+		vehicleArrayList = new ArrayList<Vehicle>();
+	}
+
+	// Singleton:
+	public static VehiclesFleet getSingleInstance() { // Applying singleton idea
+		if (singleInstance == null) {
+			singleInstance = new VehiclesFleet();
+		}
+		return singleInstance;
+	}
+
+	// Singleton:
+	private void setSingleInstance(VehiclesFleet singleInstance) {
+		VehiclesFleet.singleInstance = singleInstance;
+	}
 
 	// Public Functions:
 
-	// Add a Vehicle from fleet
+
+
+	// Getter Singleton based:
+	public ArrayList<Vehicle> getListOfCities() {
+		return singleInstance.vehicleArrayList;
+	}
+
+	// Add a Vehicle from fleet:
 	public static void add(Vehicle object) {
-		vehicleArrayList.add(object);
+		singleInstance.vehicleArrayList.add(object);
 	}
 
-	// Remove a Vehicle from fleet
+	// Remove a Vehicle from fleet:
 	public static void remove(Vehicle object) {
-		vehicleArrayList.remove(object);
+		singleInstance.vehicleArrayList.remove(object);
 	}
 
-	// Get Vehicle list
-	public static ArrayList<Vehicle> getListOfVehicle() {
-		return vehicleArrayList;
-	}
-
-	// Set Vehicle list
-	public static void setListOfVehicle(ArrayList<Vehicle> vehicleArrayList) {
-		VehiclesFleet.vehicleArrayList = vehicleArrayList;
-	}
-
-	// Print entire fleet of vehicle
+	// Print entire fleet of vehicle:
 	public static void print() {
-		for (Vehicle vehicle : vehicleArrayList) {
+		for (Vehicle vehicle : singleInstance.vehicleArrayList) {
 			System.out.println(vehicle);
 		}
 	}
 
-	// Print just Gasoline Vehicles
-	public static void printGasVehicles(){
-		for (Vehicle vehicle: vehicleArrayList)
-		{
-			if (vehicle.getClass() == GasVehicle.class)
-			{
+	// Print just Gasoline Vehicles:
+	public static void printGasVehicles() {
+		for (Vehicle vehicle : singleInstance.vehicleArrayList) {
+			if (vehicle.getClass() == GasVehicle.class) {
 				System.out.println(vehicle);
 			}
 		}
 	}
 
-	// Print just Electric Vehicles
-	public static void printElectricVehicles(){
-		for (Vehicle vehicle: vehicleArrayList)
-		{
-			if (vehicle.getClass() == ElectricVehicle.class)
-			{
+	// Print just Electric Vehicles:
+	public static void printElectricVehicles() {
+		for (Vehicle vehicle : singleInstance.vehicleArrayList) {
+			if (vehicle.getClass() == ElectricVehicle.class) {
 				System.out.println(vehicle);
 			}
 		}
 	}
 
 
-	// TODO: Think if this is necessary
-	// Print by Vehicle type
-	public static void printVehicle(Vehicle vehicle) {
-		if (vehicle.getClass() == GasVehicle.class) {
-			System.out.println(vehicle);
-		} else if (vehicle.getClass() == ElectricVehicle.class) {
-			System.out.println(vehicle);
-		} else {
-			System.out.println(vehicle);
-		}
-	}
-
-	// Search by Serial Number FIX ELSE
+	// Search by Serial Number:
 	public static void searchBySerialNumber(String serialNumber) {
 
-		for(Vehicle vehicle : vehicleArrayList) {
+		for (Vehicle vehicle : singleInstance.vehicleArrayList) {
 			if (vehicle.getSerialNumber().compareTo(serialNumber) == 0) {
 				System.out.println(vehicle);
 			}
 		}
 	}
 
-	// Sort by Serial Number
+	// Sort by Serial Number:
 	public static void sortBySerialNumber() {
-		Collections.sort(vehicleArrayList, new SerialNumberComparator());
+		Collections.sort(singleInstance.vehicleArrayList, new SerialNumberComparator());
 	}
 
-	// Sort by Mileage Efficiency
+	// Sort by Mileage Efficiency:
 	public static void sortByMileageEfficiency() {
-		Collections.sort(vehicleArrayList, new MileageEfficiencyComparator());
+		Collections.sort(singleInstance.vehicleArrayList, new MileageEfficiencyComparator());
+	}
+
+	// Serialization:
+	public static void Serialized() throws IOException, ClassNotFoundException{
+		FileManager.writeSerializedFile(getListOfVehicle());
+
+		System.out.println("\n LIST of vehicles FROM SERIALIZED FILE");
+		for(Vehicle vehicle : FileManager.readSerializedFile())
+		{
+			System.out.println(vehicle);
+		}
 	}
 }

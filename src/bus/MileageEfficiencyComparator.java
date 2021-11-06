@@ -5,11 +5,11 @@ import java.util.Comparator;
 public class MileageEfficiencyComparator implements Comparator<Vehicle> {
 
 	@Override
-	public int compare(Vehicle o1, Vehicle o2) {
+	public int compare(Vehicle vehicle1, Vehicle vehicle2) {
 		// TODO Auto-generated method stub
-		if (o1.getMilePerUnitOfEnergy().compareTo(o2.getMilePerUnitOfEnergy()) < 0) {
+		if (vehicle1.getMilePerUnitOfEnergy().compareTo(vehicle2.getMilePerUnitOfEnergy()) < 0) {
 			return 1;
-		} else if (o1.getMilePerUnitOfEnergy().compareTo(o2.getMilePerUnitOfEnergy()) > 0) {
+		} else if (vehicle1.getMilePerUnitOfEnergy().compareTo(vehicle2.getMilePerUnitOfEnergy()) > 0) {
 			return -1;
 		}
 		return 0;
