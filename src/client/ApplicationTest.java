@@ -21,48 +21,130 @@ public class ApplicationTest {
     // Add all types to array list Function
     public static void add(Scanner scanner, Vehicle vehicle)
     {
+    	Boolean isValid = false;
         if (vehicle.getType() == VehicleType.GasVehicle)
         {
             GasVehicle gasVehicle;
             gasVehicle = (GasVehicle) vehicle; // Down-Casting: taking object of the superclass, and convert it to subclass
 
-            System.out.println("Serial Number? ");
-            gasVehicle.setSerialNumber(scanner.next());
+            while (!isValid) {
+				try {
+					System.out.println("Serial Number? ");
+					gasVehicle.setSerialNumber(scanner.next());
+					isValid = true;
+				} catch (EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
 
-            System.out.println("Trip Counter? ");
-            gasVehicle.setTripCounter(scanner.nextInt());
+			isValid = false;
 
-            System.out.println("Gas Consumed? ");
-            gasVehicle.setEnergyConsumed(scanner.nextDouble());
+			while (!isValid) {
+				try {
+					System.out.println("Trip Counter? ");
+					gasVehicle.setTripCounter(scanner.nextInt());
+					isValid = true;
+				} catch (NegativeNumberException | EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
 
-            System.out.println("Model? ");
-            gasVehicle.setModel(scanner.nextShort());
+			isValid = false;
 
-            System.out.println("Made? ");
-            gasVehicle.setMade(scanner.next());
+			while (!isValid) {
+				try {
+					System.out.println("Gas Consumed? ");
+					gasVehicle.setEnergyConsumed(scanner.nextDouble());
+					isValid = true;
+				} catch (NegativeNumberException | EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
 
-            // Adding to data collection
-            VehiclesFleet.add(gasVehicle);
-        }
-        else if (vehicle.getType() == VehicleType.ElectricVehicle)
-        {
-            ElectricVehicle electricVehicle;
-            electricVehicle = (ElectricVehicle) vehicle;
+			isValid = false;
 
-            System.out.println("Serial Number? ");
-            electricVehicle.setSerialNumber(scanner.next());
+			while (!isValid) {
+				try {
+					System.out.println("Model? ");
+					gasVehicle.setModel(scanner.nextShort());
+				} catch (NegativeNumberException | EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
 
-            System.out.println("Trip Counter? ");
-            electricVehicle.setTripCounter(scanner.nextInt());
+			isValid = false;
 
-            System.out.println("Gas Consumed? ");
-            electricVehicle.setEnergyConsumed(scanner.nextDouble());
+			while (!isValid) {
+				try {
+					System.out.println("Made? ");
+					gasVehicle.setMade(scanner.next());
+				} catch (EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
 
-            System.out.println("Model? ");
-            electricVehicle.setModel(scanner.nextShort());
+			// Adding to data collection
+			VehiclesFleet.add(gasVehicle);
+		} else if (vehicle.getType() == VehicleType.ElectricVehicle) {
+			ElectricVehicle electricVehicle;
+			electricVehicle = (ElectricVehicle) vehicle;
 
-            System.out.println("Made? ");
-            electricVehicle.setMade(scanner.next());
+			while (!isValid) {
+				try {
+					System.out.println("Serial Number? ");
+					electricVehicle.setSerialNumber(scanner.next());
+					isValid = true;
+				} catch (EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
+
+			isValid = false;
+			
+			while (!isValid) {
+				try {
+					System.out.println("Trip Counter? ");
+					electricVehicle.setTripCounter(scanner.nextInt());
+					isValid = true;
+				} catch (NegativeNumberException | EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
+
+			isValid = false;
+
+			while (!isValid) {
+				try {
+					System.out.println("Gas Consumed? ");
+					electricVehicle.setEnergyConsumed(scanner.nextDouble());
+					isValid = true;
+				} catch (NegativeNumberException | EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
+
+			isValid = false;
+
+			while (!isValid) {
+				try {
+					System.out.println("Model? ");
+					electricVehicle.setModel(scanner.nextShort());
+				} catch (NegativeNumberException | EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}
+
+			isValid = false;
+
+			while (!isValid) {
+				try {
+					System.out.println("Made? ");
+					electricVehicle.setMade(scanner.next());
+				} catch (EmptyFieldException ex) {
+					System.out.println(ex.getMessage());
+				}
+			}		
+
 
             // Adding to data collection
             VehiclesFleet.add(electricVehicle);

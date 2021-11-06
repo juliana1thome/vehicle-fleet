@@ -1,7 +1,14 @@
 package bus;
 
-public class Vehicle implements IMileageEfficiency {
+import java.io.Serializable;
 
+public class Vehicle implements IMileageEfficiency, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	// Variables:
 	protected Integer tripCounter;
 	protected Double energyConsumed;
@@ -11,12 +18,18 @@ public class Vehicle implements IMileageEfficiency {
 	protected VehicleType type;
 
 	// Constructor:
-	public Vehicle(Integer tripCounter, Double energyConsumed, String serialNumber, Short model, String made) {
-		this.tripCounter = tripCounter;
-		this.energyConsumed = energyConsumed;
-		this.serialNumber = serialNumber;
-		this.model = model;
-		this.made = made;
+	public Vehicle(Integer tripCounter, Double energyConsumed, String serialNumber, Short model, String made) throws NegativeNumberException, EmptyFieldException {
+//		this.tripCounter = tripCounter;		
+//		this.energyConsumed = energyConsumed;
+//		this.serialNumber = serialNumber;
+//		this.model = model;
+//		this.made = made;
+		
+		this.setTripCounter(tripCounter);
+		this.setEnergyConsumed(energyConsumed);
+		this.setSerialNumber(serialNumber);
+		this.setModel(model);
+		this.setMade(made);
 	}
 
 	// Default Constructor:
@@ -36,7 +49,9 @@ public class Vehicle implements IMileageEfficiency {
 		return tripCounter;
 	}
 
-	public void setTripCounter(Integer tripCounter) {
+	public void setTripCounter(Integer tripCounter) throws NegativeNumberException, EmptyFieldException {
+		Validator.validateValueEmpty(String.valueOf(tripCounter));
+		Validator.validateNegativeNumber(tripCounter);
 		this.tripCounter = tripCounter;
 	}
 
@@ -45,7 +60,9 @@ public class Vehicle implements IMileageEfficiency {
 		return energyConsumed;
 	}
 
-	public void setEnergyConsumed(Double energyConsumed) {
+	public void setEnergyConsumed(Double energyConsumed) throws NegativeNumberException, EmptyFieldException {
+		Validator.validateValueEmpty(String.valueOf(energyConsumed));
+		Validator.validateNegativeNumber(energyConsumed);
 		this.energyConsumed = energyConsumed;
 	}
 
@@ -54,7 +71,8 @@ public class Vehicle implements IMileageEfficiency {
 		return serialNumber;
 	}
 
-	public void setSerialNumber(String serialNumber) {
+	public void setSerialNumber(String serialNumber) throws EmptyFieldException {
+		Validator.validateValueEmpty(serialNumber);
 		this.serialNumber = serialNumber;
 	}
 
@@ -63,7 +81,9 @@ public class Vehicle implements IMileageEfficiency {
 		return model;
 	}
 
-	public void setModel(Short model) {
+	public void setModel(Short model) throws EmptyFieldException, NegativeNumberException{
+		Validator.validateValueEmpty(String.valueOf(model));
+		Validator.validateNegativeNumber(model);
 		this.model = model;
 	}
 
@@ -72,7 +92,8 @@ public class Vehicle implements IMileageEfficiency {
 		return made;
 	}
 
-	public void setMade(String made) {
+	public void setMade(String made) throws EmptyFieldException {
+		Validator.validateValueEmpty(made);
 		this.made = made;
 	}
 
