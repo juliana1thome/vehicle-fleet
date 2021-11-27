@@ -3,8 +3,8 @@
 
 
 ## Stuff from Eclipse ##
-src/.classpath
-src/.project
-src/bus/*.class
-src/client/*.class
+FullProject/src/.classpath
+FullProject/src/.project
+FullProject/src/bus/*.class
+FullProject/src/client/*.class
 ########################
