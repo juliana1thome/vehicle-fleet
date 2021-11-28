@@ -274,12 +274,15 @@ public class ApplicationTest {
 			e.printStackTrace();
 		}
 
+		// Adding vehicles from DB to ArrayList
 		for (Vehicle ev : electricList) {
 			System.out.println(ev.toString());
+			SingletonVehiclesFleet.getSingleInstance().add(ev);
 		}
 		for (Vehicle gv : gasList) {
 			System.out.println(gv.toString());
-		}
+			SingletonVehiclesFleet.getSingleInstance().add(gv);
+		}				
 
 		// Search from DB
 		System.out.println("\n------------------------------------------------------");

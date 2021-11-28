@@ -77,7 +77,7 @@ public class GasVehicleDB {
 	public static int delete(String serialNumber) throws SQLException {
 		myConnection = ConnectionDB.getConnection();
 
-		mySQLStatement = "Delete FROM GasVehicle WHERE SerialNumber = " + serialNumber;
+		mySQLStatement = "Delete FROM GasVehicle WHERE SerialNumber = \'" + serialNumber + "\'";
 
 		try {
 			myStatemnt = myConnection.createStatement();
@@ -102,7 +102,7 @@ public class GasVehicleDB {
 		myConnection = ConnectionDB.getConnection();
 
 		mySQLQuery = "SELECT TripCounter, EnergyConsumed, SerialNumber, Model, Made FROM GasVehicle WHERE  SerialNumber = "
-				+ serialNumber;
+				+ "\'" +serialNumber + "\'";
 
 		myStatemnt = myConnection.createStatement();
 		myResultSet = myStatemnt.executeQuery(mySQLQuery);
