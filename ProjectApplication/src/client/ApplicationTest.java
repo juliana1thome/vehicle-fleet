@@ -15,6 +15,7 @@ import bus.VehicleType;
 import data.ElectricVehicleDB;
 import data.GasVehicleDB;
 
+
 public class ApplicationTest {
 
 	// Add all types to array list Function

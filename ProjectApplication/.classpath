@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/ProjectBackend"/>
+	<classpathentry kind="lib" path="G:/Repository/College/vehicle-fleet/backend.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
