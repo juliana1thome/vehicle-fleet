@@ -23,9 +23,9 @@ public class GasVehicleDB {
 	 */
 	public static int insert(GasVehicle aVehicle) throws SQLException {
 		myConnection = ConnectionDB.getConnection();
-		mySQLStatement = "Insert into GasVehicle(TripCounter, KwPowerConsumed, SerialNumber, Model, Made)  values( "
-				+ aVehicle.getTripCounter() + ", \'" + aVehicle.getEnergyConsumed() + ", \'"
-				+ aVehicle.getSerialNumber() + ", \'" + aVehicle.getModel() + ", \'" + aVehicle.getMade() + "\')";
+		mySQLStatement = "Insert into GasVehicle(tripcounter, energyconsumed, serialnumber, model, made)  values( "
+				+ aVehicle.getTripCounter() + ", " + aVehicle.getEnergyConsumed() + "," + "\'"
+				+ aVehicle.getSerialNumber() + "\' , " + aVehicle.getModel() + ", " + aVehicle.getMade() + ")";
 
 		try {
 			myStatemnt = myConnection.createStatement();

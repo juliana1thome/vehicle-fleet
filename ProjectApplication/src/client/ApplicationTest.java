@@ -1,29 +1,21 @@
 package client;
 
-import bus.*;
-import data.ElectricVehicleDB;
-import data.GasVehicleDB;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import bus.ElectricVehicle;
+import bus.EmptyFieldException;
+import bus.GasVehicle;
+import bus.NegativeNumberException;
+import bus.SingletonVehiclesFleet;
+import bus.Vehicle;
+import bus.VehicleType;
+import data.ElectricVehicleDB;
+import data.GasVehicleDB;
+
 public class ApplicationTest {
-
-	// Creating new Vehicles
-	// Vehicle vehicle1 = new Vehicle();
-	// Vehicle vehicle2 = new Vehicle(10, 1.0, "X0001", (short) 10, "1991");
-
-	// Creating new Electric Vehicles
-	// ElectricVehicle electricVehicle2 = new ElectricVehicle();
-	// ElectricVehicle electricVehicle1 = new ElectricVehicle(20, 2.0, "X0002",
-	// (short) 20, "1992");
-
-	// Creating new Gas Vehicles
-	// GasVehicle gasVehicle1 = new GasVehicle();
-	// GasVehicle gasVehicle2 = new GasVehicle(30, 3.0, "X0003", (short) 20,
-	// "1993");
 
 	// Add all types to array list Function
 	public static void add(Scanner scanner, Vehicle vehicle) {
@@ -31,7 +23,7 @@ public class ApplicationTest {
 		if (vehicle.getType() == VehicleType.GasVehicle) {
 			GasVehicle gasVehicle;
 			gasVehicle = (GasVehicle) vehicle; // Down-Casting: taking object of the superclass, and convert it to
-												// subclass
+			// subclass
 
 			while (!isValid) {
 				try {
@@ -123,7 +115,7 @@ public class ApplicationTest {
 
 			while (!isValid) {
 				try {
-					System.out.println("Gas Consumed? ");
+					System.out.println("Energy Consumed? ");
 					electricVehicle.setEnergyConsumed(scanner.nextDouble());
 					isValid = true;
 				} catch (NegativeNumberException | EmptyFieldException exception) {
@@ -219,7 +211,6 @@ public class ApplicationTest {
 		System.out.println("Printing only Electric vehicles, before sorting:");
 		SingletonVehiclesFleet.getSingleInstance().printElectricVehicles();
 
-
 		// Print Data Before Sorting
 		System.out.println("\n------------------------------------------------------");
 		System.out.println("Printing the entire fleet of vehicles, before sorting:");
@@ -233,7 +224,8 @@ public class ApplicationTest {
 
 		// Print Data Before Sorting by Serial Number
 		System.out.println("\n------------------------------------------------------");
-		System.out.println("Printing vehicles, after sorting by Serial Number and depending on its type (Increasing): ");
+		System.out
+				.println("Printing vehicles, after sorting by Serial Number and depending on its type (Increasing): ");
 		SingletonVehiclesFleet.getSingleInstance().sortBySerialNumber();
 		SingletonVehiclesFleet.getSingleInstance().print();
 
@@ -250,29 +242,33 @@ public class ApplicationTest {
 		System.out.println("\n------------------------------------------------------");
 		System.out.println("DB Inserting row");
 		try {
-			ElectricVehicle electricVehicle1 = new ElectricVehicle(20, 2.0, "X0002", (short) 20, "1992");
-			ElectricVehicleDB.insert(electricVehicle1);
-		} catch (NegativeNumberException | EmptyFieldException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			for (Vehicle vehicle : SingletonVehiclesFleet.getSingleInstance().getListOfVehicle()) {
+				if (vehicle.getType() == VehicleType.ElectricVehicle) {
+					ElectricVehicleDB.insert((ElectricVehicle) vehicle);
+				}
 
-		// Deleting the electric vehicle from DB
-		System.out.println("\n------------------------------------------------------");
-		System.out.println("DB Deleting row");
-		try {
-			ElectricVehicleDB.delete("X0002");
+				if (vehicle.getType() == VehicleType.GasVehicle) {
+					GasVehicleDB.insert((GasVehicle) vehicle);
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		// Extracting electric vehicles from DB
 		System.out.println("\n------------------------------------------------------");
-		System.out.println("DB Selecting all rows from ElectricVehicle");
+		System.out.println("DB Selecting all rows from ElectricVehicle and GasVehicle");
 		ArrayList<ElectricVehicle> electricList = new ArrayList<ElectricVehicle>();
+		ArrayList<GasVehicle> gasList = new ArrayList<GasVehicle>();
+
 		try {
 			electricList = ElectricVehicleDB.select();
+		} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			gasList = GasVehicleDB.select();
 		} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
 			e.printStackTrace();
 		}
@@ -280,33 +276,97 @@ public class ApplicationTest {
 		for (Vehicle ev : electricList) {
 			System.out.println(ev.toString());
 		}
+		for (Vehicle gv : gasList) {
+			System.out.println(gv.toString());
+		}
 
 		// Search from DB
 		System.out.println("\n------------------------------------------------------");
-		System.out.println("DB Search one row from ElectricVehicle");
-		ElectricVehicle v1 = new ElectricVehicle();
-		try {
-			v1 = ElectricVehicleDB.search("Chevy");
-			System.out.println(v1);
-		} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		System.out.println("Add the serial Number that you want to search in the Database: ");
+		String serialNumber = scanner.next();
+		for (Vehicle vehicle : SingletonVehiclesFleet.getSingleInstance().getListOfVehicle()) {
+
+			// ELECTRIC VEHICLE
+			if (vehicle.getType() == VehicleType.ElectricVehicle) {
+				if (vehicle.getSerialNumber().compareTo(serialNumber) == 0) {
+					try {
+						ElectricVehicleDB.search(vehicle.getSerialNumber());
+						System.out.println(vehicle);
+
+						// Deleting the searched vehicle from DB
+						System.out.print("Do you want to delete the row this row? [press 1 for yes or 0 for no]");
+						int delete = scanner.nextInt();
+						switch (delete) {
+						case 1:
+							System.out.println("\n------------------------------------------------------");
+							System.out.println("DB Deleting row");
+							try {
+								ElectricVehicleDB.delete(vehicle.getSerialNumber());
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+					} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+
+			// GAS VEHICLE
+			if (vehicle.getType() == VehicleType.GasVehicle) {
+				if (vehicle.getSerialNumber().compareTo(serialNumber) == 0) {
+					try {
+						GasVehicleDB.search(vehicle.getSerialNumber());
+						System.out.println(vehicle);
+
+						// Deleting the searched vehicle from DB
+						System.out.print("Do you want to delete the row this row? [press 1 for yes or 0 for no]");
+						int delete = scanner.nextInt();
+						switch (delete) {
+						case 1:
+							System.out.println("\n------------------------------------------------------");
+							System.out.println("DB Deleting row");
+							try {
+								GasVehicleDB.delete(vehicle.getSerialNumber());
+
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+					} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 
+		// TODO: Check if this is necessary or fix it if it is necessary
 		// Update from DB
-		if (v1 != null) {
+		if (electricList.size() > 0) {
+			ElectricVehicle v1 = null;
 			try {
-				v1.setTripCounter(50);
-			} catch (NegativeNumberException | EmptyFieldException e) {
-				e.printStackTrace();
+				v1 = ElectricVehicleDB.search(electricList.get(0).getSerialNumber());
+			} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			
-			System.out.println("\n------------------------------------------------------");
-			System.out.println("DB Update one column from a row from ElectricVehicle");
-			try {
-				ElectricVehicleDB.update(v1);
-			} catch (SQLException e) {
-				e.printStackTrace();
+
+			if (v1 != null) {
+				try {
+					v1.setTripCounter(50);
+				} catch (NegativeNumberException | EmptyFieldException e) {
+					e.printStackTrace();
+				}
+
+				System.out.println("\n------------------------------------------------------");
+				System.out.println("DB Update one column from a row from ElectricVehicle");
+				try {
+					ElectricVehicleDB.update(v1);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
