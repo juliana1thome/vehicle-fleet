@@ -7,5 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="G:/Repository/College/vehicle-fleet/backend.jar"/>
+	<classpathentry kind="lib" path="G:/Repository/College/vehicle-fleet/ojdbc6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
