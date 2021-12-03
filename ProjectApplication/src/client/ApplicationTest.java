@@ -3,21 +3,19 @@ package client;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import bus.ElectricVehicle;
 import bus.EmptyFieldException;
 import bus.GasVehicle;
 import bus.NegativeNumberException;
+import bus.SingletonDBConnection;
 import bus.SingletonVehiclesFleet;
 import bus.Vehicle;
 import bus.VehicleType;
-import data.ElectricVehicleDB;
-import data.GasVehicleDB;
-
 
 public class ApplicationTest {
-
 	// Add all types to array list Function
 	public static void add(Scanner scanner, Vehicle vehicle) {
 		Boolean isValid = false;
@@ -163,7 +161,7 @@ public class ApplicationTest {
 
 		do {
 			// User Input
-			System.out.print("What type of counter? [Type 1: Gas Vehicle / Type 2: Electric Vehicle] ");
+			System.out.print("What type of counter? [Type 1: Gas Vehicle / Type 2: Electric Vehicle] / [0- to exit] ");
 			option = scanner.nextInt();
 
 			// Menu of selections
@@ -195,6 +193,10 @@ public class ApplicationTest {
 		// Load data during run-time
 		// Loading data from user
 		loadData(scanner);
+
+		// Warning user that it cannot add more vehicles from now
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("End of Vehicles creation");
 
 		// Search by Serial Number
 		System.out.println("\n------------------------------------------------------");
@@ -241,16 +243,10 @@ public class ApplicationTest {
 
 		// Connecting and saving in DB
 		System.out.println("\n------------------------------------------------------");
-		System.out.println("DB Inserting row");
+		System.out.println("Database Inserting row");
 		try {
 			for (Vehicle vehicle : SingletonVehiclesFleet.getSingleInstance().getListOfVehicle()) {
-				if (vehicle.getType() == VehicleType.ElectricVehicle) {
-					ElectricVehicleDB.insert((ElectricVehicle) vehicle);
-				}
-
-				if (vehicle.getType() == VehicleType.GasVehicle) {
-					GasVehicleDB.insert((GasVehicle) vehicle);
-				}
+				SingletonDBConnection.GetInstance().insert(vehicle);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -258,125 +254,263 @@ public class ApplicationTest {
 
 		// Extracting electric vehicles from DB
 		System.out.println("\n------------------------------------------------------");
-		System.out.println("DB Selecting all rows from ElectricVehicle and GasVehicle");
-		ArrayList<ElectricVehicle> electricList = new ArrayList<ElectricVehicle>();
-		ArrayList<GasVehicle> gasList = new ArrayList<GasVehicle>();
+		System.out.println("Database Selecting all rows from ElectricVehicle and GasVehicle");
+
+		ArrayList<Vehicle> vehiclesList = new ArrayList<Vehicle>();
 
 		try {
-			electricList = ElectricVehicleDB.select();
+			vehiclesList = SingletonDBConnection.GetInstance().select();
 		} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
 			e.printStackTrace();
 		}
 
-		try {
-			gasList = GasVehicleDB.select();
-		} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
-			e.printStackTrace();
+		System.out.println("\n All Vehicles in the Database");
+		for (Vehicle vehicle : vehiclesList) {
+			System.out.println(vehicle.toString());
+			SingletonVehiclesFleet.getSingleInstance().add(vehicle);
 		}
-
-		// Adding vehicles from DB to ArrayList
-		for (Vehicle ev : electricList) {
-			System.out.println(ev.toString());
-			SingletonVehiclesFleet.getSingleInstance().add(ev);
-		}
-		for (Vehicle gv : gasList) {
-			System.out.println(gv.toString());
-			SingletonVehiclesFleet.getSingleInstance().add(gv);
-		}				
 
 		// Search from DB
 		System.out.println("\n------------------------------------------------------");
 		System.out.println("Add the serial Number that you want to search in the Database: ");
 		String serialNumber = scanner.next();
 		for (Vehicle vehicle : SingletonVehiclesFleet.getSingleInstance().getListOfVehicle()) {
-
-			// ELECTRIC VEHICLE
-			if (vehicle.getType() == VehicleType.ElectricVehicle) {
-				if (vehicle.getSerialNumber().compareTo(serialNumber) == 0) {
+			if (vehicle.getSerialNumber().compareTo(serialNumber) == 0) {
+				if (vehicle.getType() == VehicleType.ElectricVehicle) {
 					try {
-						ElectricVehicleDB.search(vehicle.getSerialNumber());
+						SingletonDBConnection.GetInstance().searchElectricVehicle(serialNumber);
 						System.out.println(vehicle);
 
 						// Deleting the searched vehicle from DB
-						System.out.print("Do you want to delete the row this row? [press 1 for yes or 0 for no]");
+						System.out.print(
+								"Do you want to delete the row that you just searched? [press 1 for yes or 0 for no]");
 						int delete = scanner.nextInt();
 						switch (delete) {
 						case 1:
 							System.out.println("\n------------------------------------------------------");
-							System.out.println("DB Deleting row");
+							System.out.println("Database Deleting row");
 							try {
-								ElectricVehicleDB.delete(vehicle.getSerialNumber());
+								SingletonDBConnection.GetInstance().deleteElectricVehicle(vehicle.getSerialNumber());
 							} catch (SQLException e) {
 								e.printStackTrace();
 							}
 						}
 					} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}
-			}
-
-			// GAS VEHICLE
-			if (vehicle.getType() == VehicleType.GasVehicle) {
-				if (vehicle.getSerialNumber().compareTo(serialNumber) == 0) {
+				} else if (vehicle.getType() == VehicleType.GasVehicle) {
 					try {
-						GasVehicleDB.search(vehicle.getSerialNumber());
+						SingletonDBConnection.GetInstance().searchGasVehicle(vehicle.getSerialNumber());
 						System.out.println(vehicle);
 
 						// Deleting the searched vehicle from DB
-						System.out.print("Do you want to delete the row this row? [press 1 for yes or 0 for no]");
+						System.out.print(
+								"Do you want to delete the row that you just searched? [press 1 for yes or 0 for no]");
 						int delete = scanner.nextInt();
 						switch (delete) {
 						case 1:
 							System.out.println("\n------------------------------------------------------");
-							System.out.println("DB Deleting row");
+							System.out.println("Database Deleting row");
 							try {
-								GasVehicleDB.delete(vehicle.getSerialNumber());
+								SingletonDBConnection.GetInstance().deleteGasVehicle(vehicle.getSerialNumber());
 
 							} catch (SQLException e) {
 								e.printStackTrace();
 							}
 						}
 					} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
 		}
 
-		// TODO: Check if this is necessary or fix it if it is necessary
 		// Update from DB
-		if (electricList.size() > 0) {
-			ElectricVehicle v1 = null;
-			try {
-				v1 = ElectricVehicleDB.search(electricList.get(0).getSerialNumber());
-			} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-			if (v1 != null) {
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("Database updated after search and delete action");
+		Random rand = new Random();
+		if (vehiclesList.size() > 0) {
+			for (Vehicle vehicle : vehiclesList) {
 				try {
-					v1.setTripCounter(50);
+					vehicle.setTripCounter(rand.nextInt(50) + 1);
 				} catch (NegativeNumberException | EmptyFieldException e) {
 					e.printStackTrace();
 				}
 
-				System.out.println("\n------------------------------------------------------");
-				System.out.println("DB Update one column from a row from ElectricVehicle");
 				try {
-					ElectricVehicleDB.update(v1);
+					SingletonDBConnection.GetInstance().update(vehicle);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 
+		try {
+			vehiclesList = SingletonDBConnection.GetInstance().select();
+		} catch (NumberFormatException | SQLException | NegativeNumberException | EmptyFieldException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("All Electric Vehicles from database after all changes");
+		System.out.println("\n------------------------------------------------------");
+
+		for (Vehicle ev : vehiclesList) {
+			if (ev.getType() == VehicleType.ElectricVehicle) {
+				System.out.println(ev.toString());
+			}
+		}
+
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("All Gas Vehicles from database after all changes");
+		System.out.println("\n------------------------------------------------------");
+		for (Vehicle gv : vehiclesList) {
+			if (gv.getType() == VehicleType.GasVehicle) {
+				System.out.println(gv.toString());
+			}
+		}
+
 		// End of application
-		System.out.println("End of application");
+		System.out.println("\n------------------------------------------------------");
+		System.out.println("End of application. Thanks for testing");
 		scanner.close();
 		System.exit(0);
 	}
 }
+
+/*
+ * What type of counter? [Type 1: Gas Vehicle / Type 2: Electric Vehicle] / [0-
+ * to exit] 1 Serial Number? Serial10 Trip Counter? 100 Gas Consumed? 20 Model?
+ * 30 Made? 201 Continue? [1-to continue / 0- to exit] 1 What type of counter?
+ * [Type 1: Gas Vehicle / Type 2: Electric Vehicle] / [0- to exit] 2 Serial
+ * Number? Serial20 Trip Counter? 20 Energy Consumed? 40 Model? 50 Made? 2021
+ * Continue? [1-to continue / 0- to exit] 0
+ * 
+ * ------------------------------------------------------ End of Vehicles
+ * creation
+ * 
+ * ------------------------------------------------------ Search a Vehicle by
+ * its serial number: Serial10 GasVehicle{, tripCounter=100,
+ * energyConsumed=20.0, serialNumber='Serial10', model=30, made='201',
+ * type=GasVehicle}
+ * 
+ * ------------------------------------------------------ Printing only Gas
+ * vehicles, before sorting: GasVehicle{, tripCounter=100, energyConsumed=20.0,
+ * serialNumber='Serial10', model=30, made='201', type=GasVehicle}
+ * 
+ * ------------------------------------------------------
+ * 
+ * Printing only Electric vehicles, before sorting: ElectricVehicle{,
+ * tripCounter=20, energyConsumed=40.0, serialNumber='Serial20', model=50,
+ * made='2021', type=ElectricVehicle}
+ * 
+ * ------------------------------------------------------ Printing the entire
+ * fleet of vehicles, before sorting: GasVehicle{, tripCounter=100,
+ * energyConsumed=20.0, serialNumber='Serial10', model=30, made='201',
+ * type=GasVehicle} ElectricVehicle{, tripCounter=20, energyConsumed=40.0,
+ * serialNumber='Serial20', model=50, made='2021', type=ElectricVehicle}
+ * 
+ * ------------------------------------------------------ Printing vehicles,
+ * after sorting by Mileage Efficiency (Decreasing): GasVehicle{,
+ * tripCounter=100, energyConsumed=20.0, serialNumber='Serial10', model=30,
+ * made='201', type=GasVehicle} ElectricVehicle{, tripCounter=20,
+ * energyConsumed=40.0, serialNumber='Serial20', model=50, made='2021',
+ * type=ElectricVehicle}
+ * 
+ * ------------------------------------------------------ Printing vehicles,
+ * after sorting by Serial Number and depending on its type (Increasing):
+ * ElectricVehicle{, tripCounter=20, energyConsumed=40.0,
+ * serialNumber='Serial20', model=50, made='2021', type=ElectricVehicle}
+ * GasVehicle{, tripCounter=100, energyConsumed=20.0, serialNumber='Serial10',
+ * model=30, made='201', type=GasVehicle}
+ * 
+ * ------------------------------------------------------ Serializing final
+ * vehicle list...
+ * 
+ * LIST of vehicles FROM SERIALIZED FILE ElectricVehicle{, tripCounter=20,
+ * energyConsumed=40.0, serialNumber='Serial20', model=50, made='2021',
+ * type=ElectricVehicle} GasVehicle{, tripCounter=100, energyConsumed=20.0,
+ * serialNumber='Serial10', model=30, made='201', type=GasVehicle}
+ * 
+ * ------------------------------------------------------ Database Inserting row
+ * Connection successful Connection successful
+ * 
+ * ------------------------------------------------------ Database Selecting all
+ * rows from ElectricVehicle and GasVehicle Connection successful Connection
+ * successful
+ * 
+ * All Vehicles in the Database ElectricVehicle{, tripCounter=3,
+ * energyConsumed=10.5, serialNumber='Chevy1', model=10, made='Chevy',
+ * type=ElectricVehicle} ElectricVehicle{, tripCounter=22, energyConsumed=10.5,
+ * serialNumber='Chevy2', model=10, made='Chevy', type=ElectricVehicle}
+ * ElectricVehicle{, tripCounter=20, energyConsumed=40.0,
+ * serialNumber='Serial20', model=50, made='2021', type=ElectricVehicle}
+ * ElectricVehicle{, tripCounter=3, energyConsumed=20.0, serialNumber='Plop100',
+ * model=30, made='40', type=ElectricVehicle} ElectricVehicle{, tripCounter=42,
+ * energyConsumed=10.0, serialNumber='Mazda1', model=10, made='10',
+ * type=ElectricVehicle}
+ * 
+ * ------------------------------------------------------ GasVehicle{,
+ * tripCounter=100, energyConsumed=20.0, serialNumber='Serial10', model=30,
+ * made='201', type=GasVehicle} GasVehicle{, tripCounter=41,
+ * energyConsumed=15.0, serialNumber='Honda2', model=10, made='Honda',
+ * type=GasVehicle} GasVehicle{, tripCounter=25, energyConsumed=31.0,
+ * serialNumber='10', model=25, made='20', type=GasVehicle} GasVehicle{,
+ * tripCounter=29, energyConsumed=20.0, serialNumber='Honda4', model=20,
+ * made='20', type=GasVehicle} GasVehicle{, tripCounter=15,
+ * energyConsumed=100.0, serialNumber='Mazda1', model=10, made='10',
+ * type=GasVehicle} GasVehicle{, tripCounter=8, energyConsumed=10.0,
+ * serialNumber='Mazda2', model=10, made='10', type=GasVehicle}
+ * 
+ * ------------------------------------------------------ Database updated
+ * before search and delete action Connection successful Connection successful
+ * Connection successful Connection successful Connection successful Connection
+ * successful Connection successful Connection successful Connection successful
+ * Connection successful Connection successful
+ * 
+ * ------------------------------------------------------ Add the serial Number
+ * that you want to search in the Database: 10 Connection successful
+ * GasVehicle{, tripCounter=25, energyConsumed=31.0, serialNumber='10',
+ * model=25, made='20', type=GasVehicle} Do you want to delete the row that you
+ * just searched? [press 1 for yes or 0 for no]1
+ * 
+ * ------------------------------------------------------ Database Deleting row
+ * Connection successful
+ * 
+ * ------------------------------------------------------ Database updated after
+ * search and delete action Connection successful Connection successful
+ * Connection successful Connection successful Connection successful Connection
+ * successful Connection successful Connection successful Connection successful
+ * Connection successful Connection successful Connection successful Connection
+ * successful
+ * 
+ * ------------------------------------------------------ All Electric Vehicles
+ * from database after all changes
+ * 
+ * ------------------------------------------------------ ElectricVehicle{,
+ * tripCounter=47, energyConsumed=10.5, serialNumber='Chevy1', model=10,
+ * made='Chevy', type=ElectricVehicle} ElectricVehicle{, tripCounter=11,
+ * energyConsumed=10.5, serialNumber='Chevy2', model=10, made='Chevy',
+ * type=ElectricVehicle} ElectricVehicle{, tripCounter=35, energyConsumed=40.0,
+ * serialNumber='Serial20', model=50, made='2021', type=ElectricVehicle}
+ * ElectricVehicle{, tripCounter=45, energyConsumed=20.0,
+ * serialNumber='Plop100', model=30, made='40', type=ElectricVehicle}
+ * ElectricVehicle{, tripCounter=41, energyConsumed=10.0, serialNumber='Mazda1',
+ * model=10, made='10', type=ElectricVehicle}
+ * 
+ * ------------------------------------------------------ All Gas Vehicles from
+ * database after all changes
+ * 
+ * ------------------------------------------------------ GasVehicle{,
+ * tripCounter=18, energyConsumed=20.0, serialNumber='Serial10', model=30,
+ * made='201', type=GasVehicle} GasVehicle{, tripCounter=29,
+ * energyConsumed=15.0, serialNumber='Honda2', model=10, made='Honda',
+ * type=GasVehicle} GasVehicle{, tripCounter=19, energyConsumed=20.0,
+ * serialNumber='Honda4', model=20, made='20', type=GasVehicle} GasVehicle{,
+ * tripCounter=6, energyConsumed=100.0, serialNumber='Mazda1', model=10,
+ * made='10', type=GasVehicle} GasVehicle{, tripCounter=47, energyConsumed=10.0,
+ * serialNumber='Mazda2', model=10, made='10', type=GasVehicle}
+ * 
+ * ------------------------------------------------------ End of application.
+ * Thanks for testing
+ */
