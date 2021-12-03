@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import bus.ElectricVehicle;
 import bus.EmptyFieldException;
 import bus.NegativeNumberException;
+import bus.Vehicle;
 
 public class ElectricVehicleDB {
 	static private Connection myConnection;
@@ -21,7 +22,7 @@ public class ElectricVehicleDB {
 	/*
 	 * return 1 if added successfully otherwise 0
 	 */
-	public static int insert(ElectricVehicle aVehicle) throws SQLException {
+	public static int insert(Vehicle aVehicle) throws SQLException {
 		myConnection = ConnectionDB.getConnection();
 		mySQLStatement = "Insert into ElectricVehicle(tripcounter, kwpowerconsumed, serialnumber, model, made)  values( "
 				+ aVehicle.getTripCounter() + ", " + aVehicle.getEnergyConsumed() + ", " + "\'"
@@ -41,7 +42,14 @@ public class ElectricVehicleDB {
 		}
 	}
 
-	public static int update(ElectricVehicle aVehicle) throws SQLException {
+	/**
+	 * Update query
+	 * 
+	 * @param aVehicle
+	 * @return
+	 * @throws SQLException
+	 */
+	public static int update(Vehicle aVehicle) throws SQLException {
 
 		myConnection = ConnectionDB.getConnection();
 
@@ -68,8 +76,7 @@ public class ElectricVehicleDB {
 	}
 
 	/**
-	 * 
-	 * @param id primary key of vehicle
+	 * @param serialNumber
 	 * @return return 1 if removed successfully otherwise 0
 	 * @throws SQLException
 	 */
@@ -95,7 +102,18 @@ public class ElectricVehicleDB {
 		}
 	}
 
-	public static ElectricVehicle search(String serialNumber)
+	/**
+	 * Search query by serial number
+	 * 
+	 * @param serialNumber
+	 * @return
+	 * @throws SQLException
+	 * @throws SQLException
+	 * @throws NumberFormatException
+	 * @throws NegativeNumberException
+	 * @throws EmptyFieldException
+	 */
+	public static Vehicle search(String serialNumber)
 			throws SQLException, SQLException, NumberFormatException, NegativeNumberException, EmptyFieldException {
 
 		myConnection = ConnectionDB.getConnection();
@@ -117,7 +135,17 @@ public class ElectricVehicleDB {
 		return aVehicle;
 	}
 
-	public static ArrayList<ElectricVehicle> select()
+	/**
+	 * Select query
+	 * 
+	 * @return
+	 * @throws SQLException
+	 * @throws NumberFormatException
+	 * @throws SQLException
+	 * @throws NegativeNumberException
+	 * @throws EmptyFieldException
+	 */
+	public static ArrayList<Vehicle> select()
 			throws SQLException, NumberFormatException, SQLException, NegativeNumberException, EmptyFieldException {
 
 		myConnection = ConnectionDB.getConnection();
@@ -127,7 +155,7 @@ public class ElectricVehicleDB {
 		myStatemnt = myConnection.createStatement();
 		myResultSet = myStatemnt.executeQuery(mySQLQuery);
 
-		ArrayList<ElectricVehicle> myList = new ArrayList<ElectricVehicle>();
+		ArrayList<Vehicle> myList = new ArrayList<Vehicle>();
 		while (myResultSet.next()) {
 			aVehicle = new ElectricVehicle(Integer.parseInt(myResultSet.getString(1)),
 					Double.parseDouble(myResultSet.getString(2)), myResultSet.getString(3),

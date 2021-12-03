@@ -9,11 +9,6 @@ public class SingletonVehiclesFleet {
 	private static SingletonVehiclesFleet singleInstance = null;
 	private ArrayList<Vehicle> vehicleArrayList = null;
 
-	// Getter of Vehicle list:
-	public ArrayList<Vehicle> getListOfVehicle() {
-		return vehicleArrayList;
-	}
-
 	// Singleton:
 	private SingletonVehiclesFleet() {
 		vehicleArrayList = new ArrayList<Vehicle>();
@@ -33,12 +28,16 @@ public class SingletonVehiclesFleet {
 	}
 
 	// Public Functions:
-
-	// Getter Singleton based:
-	public ArrayList<Vehicle> getListOfCities() {
-		return singleInstance.vehicleArrayList;
+	// Setter of Vehicle list;
+	public void setListOfVehicle(ArrayList<Vehicle> vehiclesList) {
+		vehicleArrayList = vehiclesList;
 	}
-
+	
+	// Getter of Vehicle list:
+	public ArrayList<Vehicle> getListOfVehicle() {
+		return vehicleArrayList;
+	}
+	
 	// Add a Vehicle from fleet:
 	public void add(Vehicle object) {
 		singleInstance.vehicleArrayList.add(object);
@@ -99,7 +98,7 @@ public class SingletonVehiclesFleet {
 		FileManager.writeSerializedFile(getListOfVehicle());
 
 		System.out.println("\n LIST of vehicles FROM SERIALIZED FILE");
-		for (Vehicle vehicle : FileManager.readSerializedFile()) {
+		for (Vehicle vehicle : FileManager.readSerializedFileToArrayList()) {
 			System.out.println(vehicle);
 		}
 	}
